@@ -113,6 +113,7 @@ we will elaborate more about most of these function later
 <br>this class gets a String for the json file and runs the function in Ex2 that creates the GUI.
 <br>
 <br>
+
 __________________________________________________________________________________________
 
 ## elaborating the functions from algo
@@ -210,7 +211,17 @@ ________________________________________________________________________________
 <br><br><b>load: </b>
 <br>this function loads a graph from a json file
 <br>run time O(|v|+|e|) v=vertexes, e=edges .
-
+<br>
+<br>
+<br> <b> dijkstra</b>
+<br>this function finds the shortest path from 1 vertex to all other vertexes in the graph
+<br>here is a explanation to how the Dijktra algorithm works
+ <br>https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+<br>this function has a comparator for IntDUb so that the priority Queue orders them in acending order.
+<br>this function runs 2 hashmaps at the same time so that it can return the distance and the list
+<br>the run time of this function is O((|v|+e|)log|e|) v=vertex e=edge
+<br>
+<br>
 
 
 
