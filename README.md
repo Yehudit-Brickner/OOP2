@@ -1,7 +1,7 @@
 
 # Ex2_OOP
 __________________________________
-## Najeeb Abdulah & Yehudit Brickner 
+## Najeeb Abdalla & Yehudit Brickner 
 ### our project has 11 classes:
 <b> 
 <br>•	Geo- implements Geolocation
