@@ -2,7 +2,7 @@
 # Ex2_OOP
 __________________________________
 ## Najeeb Abdulah & Yehudit Brickner 
-### our project has 9 classes:
+### our project has 11 classes:
 <b> 
 <br>•	Geo- implements Geolocation
 <br>•	Vertex- implements NodeData
@@ -11,6 +11,8 @@ __________________________________
 <br>•	Algo- implements DirectedwheightedGrah
 <br>•	FrameGUI
 <br>•	Panel_GUI
+<br>•	Pair
+<br>•	IntDub
 <br>•	Ex2
 <br>•	main
 </b> 
@@ -92,6 +94,14 @@ we will elaborate more about most of these function later
 <br>we found this function on stack over flow: https://stackoverflow.com/questions/2027613/how-to-draw-a-directed-arrow-line-in-java
 <br>
 <br>
+<b>  Pair</b> 
+<br> this class is used to save to different types of hashmaps in 1 object.
+<br>
+<br>
+<b>  IntDub</b> 
+<br> this class is used to save an Int and a double in the same object. 
+<br>
+<br>
 <b>  Ex2</b> 
 <br>this class has 3 functions:
 <br>getGraph: creates a new object algo, load a json file to it, return the graph from algo
@@ -115,63 +125,64 @@ ________________________________________________________________________________
 <br><br><b>copy: </b>
 <br>this creates a deep copy of the graph
 <br>run time O(|v|+|e|) v=vertexes, e=edges .
+
 <br><br><b>isConnected:</b>
 <br>we will check if you can get from every Vertex to Every Vertex.
 <br>if the graph has no nodes by default it is connected.
 <br>if the graph has fewer edges than vertexes it can not be connected.
 <br>if neither of the if give us an answer.
 <br>we will start by marking each vertex as not seen.
-<br>taking the first Vertex in the Hashmap of Vertexes.
-<br>and running the function tagchild.
-<br>after we will iterate through the Vertexes and make sure that all the Vertexes have been seen.
-<br>if we find a vertex that hasn't been seen the graph isn't connected.
-<br>if all the vertexes have been seen we will flip the graph.
-<br>and repeat on the flipped graph.
-<br>the running time is O(|v|^2) v=vertex.
-<br>because tagchild running time is O(|v|^2)
-<br>the max run time for flip graph is also O(|v|^2) =O (|v|+|e|)
-<br>when every Vertex has edges to every vertex v*(v-1)+v=v^2 
-<br><br><b>tagchild:</b>
-<br>we will check if the vertx has been seen.
-<br>if it hasn't been seen we will mark that it has been seen.
-<br>we will iterate through the Vertexes in the graph.
-<br>if the vertex we get to while iterating hasn't been seen and isn't vertex v.
-<br>we will see if there is an edge between v and this vertex.
-<br>if there is we will run the function again with the new vertex.
-<br>the run time of this function is O(|v|^2) v=vertex. 
+<br>we will create a queue and add the first vertex to it
+<br>while the queue isnt empty.
+<br>we will mark the vertex as seen and iterate through the vertexes edges and add the edges dest to the queue
+<br>then we will poll the vertex.
+<br>after we will iterate through the Vertexes and make sure that all the Vertexes have been seen
+<br>if we find a vertex that hasn't been seen the graph isn't connected
+<br>if all the vertexes have been seen we will flip the graph
+<br>and repeat on the flipped graph
+<br>the running time is O(|v|+|e|) v=vertex
+
 <br><br><b>flipGraph:</b>
 <br>we will start by creating a new graph.
 <br>we will copy the vertexes from the given graph to our new graph.
 <br>we will copy the edges from the given graph to our new graph.
 <br>BUT we will switch the src and dest.
 <br>run time O(|v|+|e|) v=vertexes, e=edges .
+
 <br><br><b>shortestPathDist:</b>
-<br>create  a hashmap from the Floyd_Warshall function
+<br>create  a pair from the dijksta function
+<br>create a hashmap that gets the hashmap of the distances from pair
 <br>create a list l1 with the src and dest keys
 <br>create the list l2 by getting the value of l1 from the hashmap
 <br>return l2
-<br>the run time of the function is O(|v|^3) because of the Floyd_Warshall function 
+<br>the run time of the function is O((|v|+e|)log|e|) v=vertex e=edge because of dijsktra
+
 <br><br><b>shortestPath:</b>
-<br>create  a hashmap from the Floyd_Warshall_list function
+<br>create  a pair from the dijksta function
+<br>create a hashmap that gets the hashmap of the lists from pair
 <br>create a list l1 with the src and dest keys
 <br>create a new list  l2 from access the hashmap with the l1 and get its value
 <br>create a new list  l3 of Vertexes from the l2 we got from the hashmap
 <br>return l3
-<br>the run time of the function is O(|v|^3) because of the Floyd_Warshall_list function 
+<br>the run time of the function is O((|v|+e|)log|e|) v=vertex e=edge because of dijsktra
+
 <br><br><b>center:</b>
 <br>if the graph isn't connected the graph doesn't have a center.
-<br>create a hashmap from the Floyd_Warshall function.
-<br>create a new hashmap that contains the farthest vertex from each vertex when looking at the shortest path between vertexes.
-<br>we will create a loop in a loop to find the farthest vertex from each vertex
-<br>and add it to the hashmap.
+<br>loop through the vertexes and run dijkstra.
+<br>find the farthest Vertex from the src add it to the hashmap af farthest vertexes
+<br>we will loop through the hashmap to find the vertex with the smallest value
+<br>and return that vertex
 <br>we will loop through the hashmap to find the vertex with the smallest value
 <br>and return that vertex.
-<br>the run time of the function is O(|v|^3) because of the Floyd_Warshall function.
+<br>the run time of the function is  O((|v^2|+e|)log|e|) v=vertex e=edge
+
 <br><br><b>tsp: </b>
 <br>if cities is empty return null.
 <br>if cities has 1 city return cities.
-<br>hashmap1= Floyd_Warshall.
-<br>hashmap2= Floyd_Warshall_list.
+<br>hashmap1= distance between Vertexes
+<br>hashmap2= list of vertexes.
+<br>loop through the vertexes in cities and run dijextra on all of them and add the values,
+<br>to the respective hashmaps
 <br>create 2 arraylists of the cities city1,city2.
 <br>create a loop on a loop to find the shortest path in the cities list.
 <br>create list ans and add the Vertexes in that path to it.
@@ -183,7 +194,9 @@ ________________________________________________________________________________
 <br>we have added all the vertexes from cities to the ans.
 <br>now we need to connect the last Vertex to the first vertex.
 <br>return ans.
-<br>the run time of the function is O(|v|^3) v=vertex or O(|c|!) c=vertexes in cities which ever is bigger.
+<br>if at any time a list when we are searching for a path and cant find any we can say that there are no pathes.
+<br>the run time of the function is  O((|v^2|+e|)log|e|)  or the amount of vertexes in cities! v=vertex e=edge
+
 <br><br><b>save:</b>
 <br>we created a map
 <br>than a jsonObject and jsonArray
@@ -197,19 +210,10 @@ ________________________________________________________________________________
 <br><br><b>load: </b>
 <br>this function loads a graph from a json file
 <br>run time O(|v|+|e|) v=vertexes, e=edges .
-<br><br><b>Floyd_Warshall: </b>
-<br>this function finds the shortest path between all 2 vertexes
-<br>here is a explanation to how the code works
-<br>https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
-<br>the run time of the function is O(|v|^3) v=vertex
-<br><br><b>Floyd_Warshall_list:</b>
-<br>this function finds the shortest path between all 2 vertexes with a list of vertexes keys in the path
-<br>here is a explanation to how the Floyd_Warshall works
-<br>https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
-<br>in this function as we updated the main hashmap we update the other hashmap with the path.
-<br>the run time of the function is O(|v|^3).
-<br>
-<br>
+
+
+
+
 _______________________________________________________________________
 ### running time of the functions
 <br>
