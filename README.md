@@ -238,4 +238,19 @@ _______________________________________________________________________
 | 100000 Nodes	|4 min 40 sec|   55 sec 589 ms | 55 sec 589 ms|   ----      | 4 min 27 sec    | -----          |21 sec 434 ms |23 sec 907 ms|
 
 
+here is a link yo our UML
+https://github.com/Yehudit-Brickner/OOP2/blob/master/Blank%20board%20(1).pdf
+
+
+_____________________________
+## HOW TO RUN THIS PROJECT
+<br>First you will need to make sure that you have java downloaded on your computer.
+<br>If it isnt downloaded hereis the link to download:
+<br> java: https://www.oracle.com/java/technologies/downloads/
+<br> once you have downloaded java,
+<br> download OOP2_N_and_Y.jar from our project
+<br> download a json file from our project
+<br> in the cmd writh java -jar complete file name for the jar file complete file name for the json file.
+
+
 
