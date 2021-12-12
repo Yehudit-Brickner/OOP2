@@ -97,17 +97,16 @@ public class algo implements DirectedWeightedGraphAlgorithms {
      * if the graph has fewer edges than vertexes it can not be connected
      * if neither of the if give us an answer
      * we will start by marking each vertex as not seen
-     * taking the first Vertex in the Hashmap of Vertexes
-     * and running the function tagchild
+     * we will create a queue and add the first vertex to it
+     * while the queue isnt empty
+     * we will mark the vertex as seen and iterate through the vertexes edges and add the edges dest to the queue
+     * then we will poll the vertex.
      * after we will iterate through the Vertexes and make sure that all the Vertexes have been seen
      * if we find a vertex that hasn't been seen the graph isn't connected
      * if all the vertexes have been seen we will flip the graph
      * and repeat on the flipped graph
-     * <p>
-     * the running time is O(|v|^2) v=vertex
-     * because tagchild running time is O(|v|^2)
-     * the max run time for flip graph is also O(|v|^2) =O (|v|+|e|)
-     * when every Vertex has edges to every vertex v*(v-1)+v=v^2
+     *
+     * the running time is O(|v|+|e|) v=vertex
      *
      * @return
      */
@@ -277,11 +276,12 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
 
     /**
-     * create  a hashmap from the Floyd_Warshall function
+     * create  a pair from the dijksta function
+     * create a hashmap that gets the hashmap of the distances from pair
      * create a list l1 with the src and dest keys
      * create the list l2 by getting the value of l1 from the hashmap
      * return l2
-     * the run time of the function is O(|v|^3) because of the Floyd_Warshall function
+     * the run time of the function is O((|v|+e|)log|e|) v=vertex e=edge because of dijsktra
      *
      * @param src  - start node
      * @param dest - end (target) node
@@ -309,12 +309,13 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
 
     /**
-     * create  a hashmap from the Floyd_Warshall_list function
+     * create  a pair from the dijksta function
+     * create a hashmap that gets the hashmap of the lists from pair
      * create a list l1 with the src and dest keys
      * create a new list  l2 from access the hashmap with the l1 and get its value
      * create a new list  l3 of Vertexes from the l2 we got from the hashmap
      * return l3
-     * the run time of the function is O(|v|^3) because of the Floyd_Warshall_list function
+     * the run time of the function is O((|v|+e|)log|e|) v=vertex e=edge because of dijsktra
      *
      * @param src  - start node
      * @param dest - end (target) node
@@ -357,13 +358,11 @@ public class algo implements DirectedWeightedGraphAlgorithms {
 
     /**
      * if the graph isn't connected the graph doesn't have a center
-     * create a hashmap from the Floyd_Warshall function
-     * create a new hashmap that contains the farthest vertex from each vertex when looking at the shortest path between vertexes
-     * we will create a loop in a loop to find the farthest vertex from each vertex
-     * and add it to the hashmap
+     * loop through the vertexes and run dijkstra.
+     * find the farthest Vertex from the src add it to the hashmap af farthest vertexes
      * we will loop through the hashmap to find the vertex with the smallest value
      * and return that vertex
-     * the run time of the function is O(|v|^3) because of the Floyd_Warshall function
+     * the run time of the function is  O((|v^2|+e|)log|e|) v=vertex e=edge
      *
      * @return
      */
@@ -437,8 +436,10 @@ public class algo implements DirectedWeightedGraphAlgorithms {
     /**
      * if cities is empty return null
      * if cities has 1 city return cities
-     * hashmap1= Floyd_Warshall
-     * hashmap2= Floyd_Warshall_list
+     * hashmap1= distance between Vertexes
+     * hashmap2= list of vertexes
+     * loop through the vertexes in cities and run dijextra on all of them and add the values,
+     * to the respective hashmaps
      * create 2 arraylists of the cities city1,city2
      * crete a loop on a loop to find the shortest path in the cities list
      * create list ans and add the Vertexes in that path to it
@@ -450,141 +451,14 @@ public class algo implements DirectedWeightedGraphAlgorithms {
      * we have added all the vertexes from cities to the ans
      * now we need to connect the last Vertex to the first vertex
      * return ans
-     * the run time of the function is O(|v|^3) v=vertex or O(|c|!) c=vertexes in cities which ever is bigger
+     * if at any time a list when we are searching for a path and cant find any we can say that there are no pathes.
+     * the run time of the function is  O((|v^2|+e|)log|e|)  or the amount of vertexes in cities! v=vertex e=edge
      *
      * @param cities
      * @return
      */
 
-    // @Override
-    public List<NodeData> tsp1(List<NodeData> cities) {
 
-        if (cities.isEmpty()) {
-            return null;
-        }
-        if (cities.size() == 1) {
-            return cities;
-        }
-        HashMap<List<Integer>, Double> mat_d = Floyd_Warshall(this.myGraph);
-        HashMap<List<Integer>, List<Integer>> mat_n = Floyd_Warshall_list(this.myGraph);
-        List<NodeData> city1 = new ArrayList<NodeData>();
-        List<NodeData> city2 = new ArrayList<NodeData>();
-        for (int i = 0; i < cities.size(); i++) {
-            city1.add(cities.get(i));
-            city2.add(cities.get(i));
-        }
-        double small = Double.MAX_VALUE;
-        List<Integer> l2 = new ArrayList<Integer>();
-        //find the smallest connector in this group;
-
-        for (int i = 0; i < city1.size(); i++) {
-            for (int j = 0; j < city1.size(); j++) {
-                if (i != j) {
-                    int v1 = city1.get(i).getKey();
-                    int v2 = city1.get(j).getKey();
-                    List<Integer> l1 = new ArrayList<Integer>();
-                    l1.add(v1);
-                    l1.add(v2);
-                    if (small > mat_d.get(l1) && mat_d.get(l1) != 0) {
-                        small = mat_d.get(l1);
-                        l2 = l1;
-                    }
-                }
-            }
-        }
-        ArrayList<Integer> ans1 = new ArrayList<Integer>();
-        List<Integer> l1 = new ArrayList<Integer>();
-        l1 = mat_n.get(l2);
-        //adding the nodes in l2 path ans
-        for (int i = 0; i < l1.size(); i++) {
-            ans1.add(l1.get(i));
-        }
-
-        //make city smaller-by getting rid of the nodes we just added
-        for (int j = 0; j < l1.size(); j++) {
-            int k1 = -1;
-            for (int i = 0; i < city2.size(); i++) {
-                if (city2.get(i).getKey() == l1.get(j)) {
-                    k1 = i;
-                }
-            }
-            if (k1 != -1) {
-                city2.remove(k1);
-            }
-        }
-
-        while (city2.size() > 0) {
-
-            double small2 = Double.MAX_VALUE;
-
-            int key_start = ans1.get(0);
-            int key_end = ans1.get(ans1.size() - 1);
-            boolean s = false;
-            boolean e = false;
-
-            List<Integer> l4 = new ArrayList<Integer>();
-            for (int i = 0; i < city2.size(); i++) {
-                if (city2.get(i).getKey() != key_start) {
-                    List<Integer> l3 = new ArrayList<Integer>();
-                    l3.add(city2.get(i).getKey());
-                    l3.add(key_start);
-                    if (mat_d.get(l3) < small2) {
-                        l4 = l3;
-                        s = true;
-                    }
-                }
-            }
-            for (int i = 0; i < city2.size(); i++) {
-                if (city2.get(i).getKey() != key_end) {
-                    List<Integer> l3 = new ArrayList<Integer>();
-                    l3.add(key_end);
-                    l3.add(city2.get(i).getKey());
-                    if (mat_d.get(l3) < small2) {
-                        l4 = l3;
-                        e = true;
-                        s = false;
-                    }
-                }
-            }
-
-            l1 = mat_n.get(l4);
-            //adding the nodes in l2 path ans
-            if (s) {
-                for (int i = l1.size() - 2; i > 0 - 1; i--) { // dont add last its already in the list
-                    ans1.add(0, l1.get(i));
-                }
-            }
-            if (e) {
-                for (int i = 1; i < l1.size(); i++) { // dont add first its already in the list
-                    ans1.add(l1.get(i));
-                }
-            }
-            for (int j = 0; j < l1.size(); j++) {
-                int k1 = -1;
-                for (int i = 0; i < city2.size(); i++) {
-                    if (city2.get(i).getKey() == l1.get(j)) {
-                        k1 = i;
-                    }
-                }
-                if (k1 != -1) {
-                    city2.remove(k1);
-                }
-            }
-        }
-
-        ArrayList<Integer> l5 = new ArrayList<Integer>();
-        l5.add(ans1.get(ans1.size() - 1));
-        l5.add(ans1.get(0));
-        List<Integer> l6 = mat_n.get(l5);
-        for (int i = 1; i < l6.size(); i++) {
-            ans1.add(l6.get(i));
-        }
-        List<NodeData> ans = new ArrayList<NodeData>();
-        for (int i = 0; i < ans1.size(); i++) {
-            ans.add(myGraph.Nodes.get(ans1.get(i)));
-        }
-        return ans;
-    }
 
 
     @Override
@@ -723,8 +597,9 @@ public class algo implements DirectedWeightedGraphAlgorithms {
         HashMap<List<Integer>,Double> all_d=new HashMap<List<Integer>,Double>();
         HashMap<List<Integer>,List<Integer>> all_l =new HashMap<List<Integer>,List<Integer>>();
         System.out.println(cities.size());
-        for (int i= cities.size()-2; i>=0;i--){
-            Pair p=dijkstaList(cities.get(i).getKey());
+        for (int i= 0; i<cities.size();i++){
+            int key=cities.get(i).getKey();
+            Pair p=dijkstaList(key);
             HashMap<List<Integer>,Double> hashd= p.getHash_d();
             HashMap<List<Integer>,List<Integer>> hashl= p.getHash_l();
             for (List<Integer> l: hashd.keySet()) {
@@ -762,6 +637,10 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                     }
                 }
             }
+        }
+        if(l2.size()==0){
+            List<NodeData> l1=new ArrayList<NodeData>();
+            return l1;
         }
 
         List<Integer> ans1= new ArrayList<Integer>(); // adding the Vertexs ids to the path
@@ -815,7 +694,10 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                     }
                 }
             }
-
+if(!e && ! s){
+    List<NodeData> l1=new ArrayList<NodeData>();
+    return l1;
+}
             List<Integer> l1 = all_l.get(l4);
             //adding the nodes in l2 path ans
             if (s) {
@@ -828,28 +710,35 @@ public class algo implements DirectedWeightedGraphAlgorithms {
                     ans1.add(l1.get(i));
                 }
             }
-            for (int j = 0; j < l1.size(); j++) {
-                int k1 = -1;
-                for (int i = 0; i < city2.size(); i++) {
-                    if (city2.get(i).getKey() == l1.get(j)) {
-                        k1 = i;
+            if (l1!=null) {
+                for (int j = 0; j < l1.size(); j++) {
+                    int k1 = -1;
+                    for (int i = 0; i < city2.size(); i++) {
+                        if (city2.get(i).getKey() == l1.get(j)) {
+                            k1 = i;
+                        }
                     }
-                }
-                if (k1 != -1) {
-                    city2.remove(k1);
+                    if (k1 != -1) {
+                        city2.remove(k1);
+                    }
                 }
             }
         }
+
+        ArrayList<Integer> l5 = new ArrayList<Integer>();
+        l5.add(ans1.get(ans1.size() - 1));
+        l5.add(ans1.get(0));
+        List<Integer> l6 = all_l.get(l5);
+        for (int i = 1; i < l6.size(); i++) {
+            ans1.add(l6.get(i));
+        }
+
 
 List<NodeData> ans=new ArrayList<NodeData>();
         for (int i=0;i<ans1.size();i++){
             ans.add(myGraph.Nodes.get(ans1.get(i)));
         }
-
-
         return ans;
-
-
     }
 
 
@@ -1316,19 +1205,7 @@ List<NodeData> ans=new ArrayList<NodeData>();
 
 
     /**
-     * this function has a comparator for IntDUb so that the priority Queue orders them in acending order.
-     * we will create a priority Queue, 2 hashmaps, and a list.
-     * the priority Queue will hold the IntDubs that we haven't finished yet, each int dub represents the distance from src to the INt part of IntDub.
-     * the hash map contain the distance between 2 vertexes and the List of NOdes Between the 2 Vertexes
-     * the list is of the Vertexes that we havent finished with yet
-     *
-     * we will add the src vertex to the Queue,
-     * while the Queue isn't empty
-     * we will peek from the Queue and update the distances to all the peeked Vertexes edges,
-     * and add those vertexes to the Queue,and we will update the the hashmaps
-     * once we finish we will pool that vertex from the Queue.
-     * we will Make a pair with the hashmaps and retuen it
-     *
+     git
      * @param src
      * @return
      */

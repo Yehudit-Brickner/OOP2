@@ -281,7 +281,7 @@ public class frameGui extends JFrame implements ActionListener {
                int answer = JOptionPane.showOptionDialog(
                        null,
                        "a vertex with this key exits, do you want to move it? ",
-                       "tsp",
+                       "addNode",
                        JOptionPane.DEFAULT_OPTION,
                        0,
                        null,

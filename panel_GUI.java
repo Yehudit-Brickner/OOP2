@@ -18,16 +18,18 @@ Graph graph1;
 
 
         int screenHeight = screensize.height;
+        screenHeight=(int)(screenHeight*7.5)/10;
         int screenWidth = screensize.width;
-        this.setPreferredSize(new Dimension(screenWidth / 2, screenHeight / 2));
-
+        screenWidth=(int)(screenWidth*7.5)/10;
+        //this.setPreferredSize(new Dimension(screenWidth / 2, screenHeight / 2));
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight ));
     }
 
     public void paint(Graphics g) {
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenHeight = screensize.height/2;
-        int screenWidth =screensize.width/2;
+        int screenHeight = (int)(screensize.height*7.5)/10;
+        int screenWidth =(int)(screensize.width*7.5)/10;
         Graphics2D g2D = (Graphics2D) g;
         g2D.setPaint(Color.BLACK);
         g2D.fillRect(0,0,screenWidth,screenHeight);
